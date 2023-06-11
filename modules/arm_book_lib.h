@@ -5,7 +5,7 @@
 
 //=====[Libraries]=============================================================
 
-#include "../mbed-os/mbed.h"
+#include "mbed.h"
 
 //=====[Declaration of public defines]=========================================
 
