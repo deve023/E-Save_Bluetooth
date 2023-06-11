@@ -15,6 +15,25 @@
 
 //=====[Declarations (prototypes) of public functions]=========================
 
+/**
+ * @brief Initialices relay pin and state.
+ * 
+ * Relay initial state: activated.
+ */
+void relayControlInit();
+
+/**
+ * @brief Activates relay.
+ * 
+ */
+void relayActivate();
+
+/**
+ * @brief Deactivates relay.
+ * 
+ */
+void relayDeactivate();
+
 //=====[#include guards - end]=================================================
 
 #endif // _MOTION_SENSOR_H_
