@@ -4,7 +4,7 @@
 
 //=====[Libraries]=============================================================
 
-#include "../arm_book_lib.h"
+#include "arm_book_lib.h"
 
 #include "energy_save_system.h"
 
