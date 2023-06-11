@@ -11,6 +11,7 @@
 #include "motion_sensor.h"
 
 #define SIGNAL_PIN PG_0 ///> Sensor signal pin define.
+#define MOTION_SENSOR_LED_PIN LED1 // PB_0
 
 //=====[Declaration of private defines]========================================
 
@@ -19,6 +20,7 @@
 //=====[Declaration and initialization of public global objects]===============
 
 InterruptIn motionSensorOutputSignal(SIGNAL_PIN);   ///> Sensor signal pin.
+DigitalOut motionSensorLed(MOTION_SENSOR_LED_PIN);  ///> Led to indicate sensor status.
 
 //=====[Declaration of external public global variables]=======================
 
@@ -50,6 +52,7 @@ void motionSensorInit()
     motionSensorOutputSignal.rise(&motionDetected);
     motionSensorState = OFF;
     motionSensorActivated = false;
+    motionSensorLed = OFF;
 }
 
 bool motionSensorRead()
@@ -80,6 +83,7 @@ static void motionDetected()
     motionSensorState = ON;
     motionSensorOutputSignal.rise(NULL);
     motionSensorOutputSignal.fall(&motionCeased);
+    motionSensorLed = ON;
 }
 
 static void motionCeased()
@@ -89,4 +93,5 @@ static void motionCeased()
     if ( motionSensorActivated ) {
         motionSensorOutputSignal.rise(&motionDetected);
     }
+    motionSensorLed = OFF;
 }

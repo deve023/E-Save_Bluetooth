@@ -26,13 +26,14 @@
 
 //=====[Implementations of public functions]===================================
 
-void smartHomeSystemInit()
+void energySaveSystemInit()
 {
     //TODO
     motionSensorInit();
+    motionSensorActivate();
 }
 
-void smartHomeSystemUpdate()
+void energySaveSystemUpdate()
 {
     //TODO
     delay(SYSTEM_TIME_INCREMENT_MS);
