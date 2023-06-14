@@ -18,7 +18,7 @@
  * @brief Initializes motion sensor. Sensor deactivated.
  * 
  */
-void motionSensorInit();
+void motionSensorInit(int dt);
 
 /**
  * @brief Reads sensor state.
@@ -28,16 +28,12 @@ void motionSensorInit();
 bool motionSensorRead();
 
 /**
- * @brief Activates motion sensor.
- * 
+ * @brief Updates and returns the accumulated time that the sensor did not
+ * detect motion.
+ *
+ * @return Accumulated non motion detected time.
  */
-void motionSensorActivate();
-
-/**
- * @brief Deactivates motion sensor.
- * 
- */
-void motionSensorDeactivate();
+int motionSensorUpdate();
 
 //=====[#include guards - end]=================================================
 

@@ -28,6 +28,19 @@ char* dateAndTimeRead();
 void dateAndTimeWrite( int year, int month, int day, 
                        int hour, int minute, int second );
 
+/**
+ * @brief Sets a time period in which the program is functional.
+ * 
+ */
+void setFunctionalTimePeriod();
+
+/**
+ * @brief Checks if the current time is within the functional period.
+ * 
+ * @return Boolean indicating if the current time is a functional time.
+ */
+bool isFunctionalTime();
+
 //=====[#include guards - end]=================================================
 
 #endif // _DATE_AND_TIME_H_

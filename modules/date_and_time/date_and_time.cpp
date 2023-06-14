@@ -1,3 +1,7 @@
+/*! @file date_and_time.cpp Implementation of the relay date and time module.
+ *
+ */
+
 //=====[Libraries]=============================================================
 
 #include "mbed.h"
@@ -11,6 +15,9 @@
 //=====[Declaration and initialization of public global objects]===============
 
 //=====[Declaration of external public global variables]=======================
+
+struct tm startTime;    ///> Time to activate sensor and control logic.
+struct tm endTime;      ///> Time to deactivate sensor and control logic.
 
 //=====[Declaration and initialization of public global variables]=============
 
@@ -42,6 +49,26 @@ void dateAndTimeWrite( int year, int month, int day,
     rtcTime.tm_isdst = -1;
 
     set_time( mktime( &rtcTime ) ); // Sets internal RTC time.
+
+    printf("%s\n", "Time and date set.");
+}
+
+void setFunctionalTimePeriod()
+{
+    startTime.tm_hour = 8;
+    startTime.tm_min  = 0;
+    startTime.tm_sec  = 0;
+
+    endTime.tm_hour = 16;
+    endTime.tm_min  = 0;
+    endTime.tm_sec  = 0;
+
+    printf("%s\n", "Functional time period set.");
+}
+
+bool isFunctionalTime()
+{
+    return true;
 }
 
 //=====[Implementations of private functions]==================================

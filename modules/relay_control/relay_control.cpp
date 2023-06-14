@@ -14,11 +14,17 @@
 
 #define RELAY_PIN PF_2  ///> Relay control pin.
 
+#define RELAY_ACT_LED_PIN LED3
+#define RELAY_DEACT_LED_PIN PH_1
+
 //=====[Declaration of private data types]=====================================
 
 //=====[Declaration and initialization of public global objects]===============
 
 DigitalInOut relayPin(RELAY_PIN);   ///> DigitalInOut relay pin.
+
+DigitalOut relayActLed(RELAY_ACT_LED_PIN);  ///> LED to indicated relay activated.
+DigitalOut relayDeactLed(RELAY_DEACT_LED_PIN);  ///> LED to indicate relay deactivated.
 
 //=====[Declaration of external public global variables]=======================
 
@@ -43,12 +49,22 @@ void relayActivate()
     relayPin.output();
     relayPin = LOW;
     relayStatus = ON;
+
+    relayActLed = ON;
+    relayDeactLed = OFF;
+
+    printf("%s\n", "Relay Activated."); // Debug.
 }
 
 void relayDeactivate()
 {
     relayPin.input();
     relayStatus = OFF;
+
+    relayActLed = OFF;
+    relayDeactLed = ON;
+
+    printf("%s\n", "Relay Deactivated."); // Debug.
 }
 
 //=====[Implementations of private functions]==================================
