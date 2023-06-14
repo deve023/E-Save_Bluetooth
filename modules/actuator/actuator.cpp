@@ -10,6 +10,7 @@
 
 #include "motion_sensor.h"
 #include "relay_control.h"
+#include "date_and_time.h"
 
 //=====[Declaration of private defines]========================================
 
@@ -49,6 +50,8 @@ void actuatorInit(int dt)
 
 void actuatorUpdate()
 {
+    motionSensorEnable = isFunctionalTime();
+
     if(TriggerCeasedMotionTime <= 0 || !(motionSensorEnable)) {
         motionSensorUpdate();
         relayActivate();
