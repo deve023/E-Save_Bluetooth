@@ -7,6 +7,7 @@
 #include "actuator.h"
 
 #include "mbed.h"
+#include "arm_book_lib.h"
 
 #include "motion_sensor.h"
 #include "relay_control.h"
@@ -28,16 +29,17 @@ typedef enum {
 
 //=====[Declaration and initialization of public global objects]===============
 
-DigitalIn onButton(ON_BUTTON);
-DigitalIn offButton(OFF_BUTTON);
+DigitalIn onButton(ON_BUTTON);      ///> On button.
+DigitalIn offButton(OFF_BUTTON);    ///> Off button.
+
+DigitalOut functionalTimeLed(LED2); ///> Led to indicate functional time.
 
 //=====[Declaration of external public global variables]=======================
 
 //=====[Declaration and initialization of public global variables]=============
 
 int dt_ms;  ///> Time increment to update module.
-int TriggerCeasedMotionTime = -1; ///> Time to deactivate relay once motion is not detected.
-//bool motionSensorEnable = true; ///> Enable of the motion sensor.
+int TriggerCeasedMotionTime; ///> Time to deactivate relay once motion is not detected. Default = 3 seg.
 actuatorState_t actuatorState = ACTUATOR_DISABLE;   ///> State of the Actuator.
 
 //=====[Declarations (prototypes) of private functions]========================
@@ -46,13 +48,13 @@ actuatorState_t actuatorState = ACTUATOR_DISABLE;   ///> State of the Actuator.
  * @brief Handler for the ON button interrupt.
  * 
  */
-void onButtonPressed();
+static void onButtonPressed();
 
 /**
  * @brief Handler for the OFF button interrupt.
  * 
  */
-void offButtonPressed();
+static void offButtonPressed();
 
 //=====[Implementations of public functions]===================================
 
@@ -61,6 +63,7 @@ void actuatorInit(int dt)
     printf("%s\n", "Initializing program."); // Debug.
 
     dt_ms = dt;
+    TriggerCeasedMotionTime = 3000; // Default: 3 seg
 
     motionSensorInit(dt);
     relayControlInit();
@@ -93,6 +96,7 @@ void actuatorUpdate()
 
     if(!isFunctionalTime()) {
         actuatorState = ACTUATOR_DISABLE;
+        functionalTimeLed = OFF;
     }
 
     switch(actuatorState) {
@@ -103,6 +107,7 @@ void actuatorUpdate()
                 } else {
                     actuatorState = ACTUATOR_MOTION_DETECTED;
                 }
+                functionalTimeLed = ON;
             }
             relayActivate();
             break;

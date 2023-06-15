@@ -10,6 +10,8 @@
 
 //=====[Declaration of public defines]=========================================
 
+#define DATE_AND_TIME_DEFAULT 2023, 6, 13, 16, 47, 1
+
 //=====[Declaration of public data types]======================================
 
 //=====[Declarations (prototypes) of public functions]=========================
