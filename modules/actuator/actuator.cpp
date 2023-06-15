@@ -19,6 +19,13 @@
 
 //=====[Declaration of private data types]=====================================
 
+typedef enum {
+    ACTUATOR_DISABLE,
+    ACTUATOR_MOTION_DETECTED,
+    ACTUATOR_MOTION_CEASED,
+    ACTUATOR_RELAY_DEACTIVATED
+} actuatorState_t;
+
 //=====[Declaration and initialization of public global objects]===============
 
 DigitalIn onButton(ON_BUTTON);
@@ -30,9 +37,22 @@ DigitalIn offButton(OFF_BUTTON);
 
 int dt_ms;  ///> Time increment to update module.
 int TriggerCeasedMotionTime = -1; ///> Time to deactivate relay once motion is not detected.
-bool motionSensorEnable = true; ///> Enable of the motion sensor.
+//bool motionSensorEnable = true; ///> Enable of the motion sensor.
+actuatorState_t actuatorState = ACTUATOR_DISABLE;   ///> State of the Actuator.
 
 //=====[Declarations (prototypes) of private functions]========================
+
+/**
+ * @brief Handler for the ON button interrupt.
+ * 
+ */
+void onButtonPressed();
+
+/**
+ * @brief Handler for the OFF button interrupt.
+ * 
+ */
+void offButtonPressed();
 
 //=====[Implementations of public functions]===================================
 
@@ -50,6 +70,8 @@ void actuatorInit(int dt)
 
 void actuatorUpdate()
 {
+
+    /*
     motionSensorEnable = isFunctionalTime();
 
     if(TriggerCeasedMotionTime <= 0 || !(motionSensorEnable)) {
@@ -65,6 +87,48 @@ void actuatorUpdate()
     } else {
         relayActivate();
     }
+    */
+
+    int CeasedMotionTime = motionSensorUpdate(); // Regardless of Actuator state, the sensor needs to be updated.
+
+    if(!isFunctionalTime()) {
+        actuatorState = ACTUATOR_DISABLE;
+    }
+
+    switch(actuatorState) {
+        case ACTUATOR_DISABLE:
+            if(isFunctionalTime()) {
+                if(CeasedMotionTime > 0) {
+                    actuatorState = ACTUATOR_MOTION_CEASED;
+                } else {
+                    actuatorState = ACTUATOR_MOTION_DETECTED;
+                }
+            }
+            relayActivate();
+            break;
+        case ACTUATOR_MOTION_DETECTED:
+            if(CeasedMotionTime > 0) {
+                actuatorState = ACTUATOR_MOTION_CEASED;
+            }
+            relayActivate();
+            break;
+        case ACTUATOR_MOTION_CEASED:
+            if(CeasedMotionTime == 0) {
+                actuatorState = ACTUATOR_MOTION_DETECTED;
+            } else if(CeasedMotionTime >= TriggerCeasedMotionTime) {
+                actuatorState = ACTUATOR_RELAY_DEACTIVATED;
+            }
+            break;
+        case ACTUATOR_RELAY_DEACTIVATED:
+            if(CeasedMotionTime == 0) {
+                actuatorState = ACTUATOR_MOTION_DETECTED;
+            }
+            relayDeactivate();
+            break;
+        default:
+            actuatorState = ACTUATOR_DISABLE;
+    }
+
 }
 
 void setTriggerMotionCeasedTime_ms(int time_ms)
