@@ -119,7 +119,7 @@ void actuatorUpdate()
 
 void setTriggerMotionCeasedTime_ms(int time_ms)
 {
-    if(time_ms <= 0) {
+    if(time_ms > 0) {
         TriggerCeasedMotionTime = time_ms;
     } else {
         TriggerCeasedMotionTime = 3000; // Default.

@@ -39,8 +39,9 @@ UnbufferedSerial bleCom(TX, RX, BLE_COM_BAUDRATE);
 static bleComState_t bleComState = BLE_PROCESS_COMMAND;
 
 static char newDateAndTime[DATE_AND_TIME_NUMBER_OF_CHARS];
+static char newTrigTime[50];
 
-static char aux[100];
+static char aux[50];
 
 //=====[Declarations (prototypes) of private functions]========================
 
@@ -110,10 +111,32 @@ static void bleComSetDateAndTime();
 static void bleCommandPrintDateAndTime();
 
 /**
+ * @brief Initiates process of setting new trig time.
+ * 
+ */
+static void bleCommandNewTrigTime();
+
+/**
+ * @brief Gets new char for the new date and time.
+ * 
+ * @param[in] c new char from the date and time.
+ */
+static void bleComNewTrigUpdate(char c);
+
+/**
+ * @brief Sets new date and time according to variable newDateAndTime[].
+ * 
+ * @param[in] n Number of characters input by user.
+ */
+static void bleComSetNewTrigTime(int n);
+
+/**
  * @brief Sends current trigger time.
  * 
  */
 static void bleCommandPrintTrigTime();
+
+
 
 //=====[Implementations of public functions]===================================
 
@@ -136,6 +159,7 @@ void bleComUpdate()
             case BLE_SET_FUNCTIONAL_TIME:
                 break;
             case BLE_SET_TRIG_TIME:
+                bleComNewTrigUpdate(c);
                 break;
             default:
                 bleComState = BLE_PROCESS_COMMAND;
@@ -164,13 +188,13 @@ static void bleProcessCommand(char c)
 {
     switch(c) {
         case '1':
-            // Set Trig time.
+            bleCommandNewTrigTime();
             break;
         case '2':
-            // Read Trig time.
+            bleCommandPrintTrigTime();
             break;
         case '3':
-            bleCommandPrintTrigTime();
+            // Set functional period.
             break;
         case '4':
             // Read functional period.
@@ -224,20 +248,20 @@ static void bleComDateAndTimeUpdate(char c)
         numberOfDateAndTimeChar = 0;
         bleComSetDateAndTime();
         bleComStringWrite("\r\n");
-        bleComStringWrite("Date and time has been set\r\n");
-    } else if (numberOfDateAndTimeChar == 4) {
+        bleComStringWrite("Date and time has been set.\r\n");
+    } else if(numberOfDateAndTimeChar == 4) {
         bleComStringWrite("\r\n");
         bleComStringWrite("Type two digits for the current month (01-12): ");
-    } else if (numberOfDateAndTimeChar == 6){
+    } else if(numberOfDateAndTimeChar == 6) {
         bleComStringWrite("\r\n");
         bleComStringWrite("Type two digits for the current day (01-31): ");
-    } else if (numberOfDateAndTimeChar == 8) {
+    } else if(numberOfDateAndTimeChar == 8) {
         bleComStringWrite("\r\n");
         bleComStringWrite("Type two digits for the current hour (00-23): ");
-    } else if (numberOfDateAndTimeChar == 10) {
+    } else if(numberOfDateAndTimeChar == 10) {
         bleComStringWrite("\r\n");
         bleComStringWrite("Type two digits for the current minutes (00-59): ");
-    } else if (numberOfDateAndTimeChar == 12){
+    } else if(numberOfDateAndTimeChar == 12) {
         bleComStringWrite("\r\n");
         bleComStringWrite("Type two digits for the current seconds (00-59): ");
     }
@@ -288,7 +312,74 @@ static void bleCommandPrintDateAndTime()
 static void bleCommandPrintTrigTime()
 {
     bleComStringWrite("Current trigger time: ");
-    sprintf(aux, "%f", getTriggerTime_ms()/60000.0);
+
+    sprintf(aux, "%d", getTriggerTime_ms() / 3600000);
     bleComStringWrite(aux);
-    bleComStringWrite(" minutes.\r\n");
+    bleComStringWrite("h ");
+
+    sprintf(aux, "%d", (getTriggerTime_ms()%3600000) / 60000);
+    bleComStringWrite(aux);
+    bleComStringWrite("m ");
+
+    sprintf(aux, "%d", (getTriggerTime_ms() % 60000)/1000);
+    bleComStringWrite(aux);
+    bleComStringWrite(" s.\r\n");
+}
+
+static void bleCommandNewTrigTime()
+{
+    bleComStringWrite("\r\nType required wait time followed by 'h', 'm' or 's' to indicate unit of measurement: ");
+    bleComState = BLE_SET_TRIG_TIME;
+}
+
+static void bleComNewTrigUpdate(char c)
+{
+    static int numberOfTrigTimeChar = 0;
+
+    newTrigTime[numberOfTrigTimeChar++] = c;
+
+    sprintf(aux, "%c", c);
+    bleComStringWrite(aux);
+
+    switch(c){
+        case 'h':
+        case 'm':
+        case 's':
+            bleComSetNewTrigTime(numberOfTrigTimeChar);
+            numberOfTrigTimeChar = 0;
+            bleComState = BLE_PROCESS_COMMAND;
+            bleComStringWrite("\r\n");
+            bleComStringWrite("Trigger wait time has been set.\r\n");
+        default:
+            break;
+    }
+
+}
+
+static void bleComSetNewTrigTime(int n)
+{
+    int i, inputTrigTime;
+
+    for(i = 0; i < n-1; i++) {
+        aux[i] = newTrigTime[i];
+    }
+    aux[i] = '\0';
+
+    inputTrigTime = atoi(aux);
+
+    switch(newTrigTime[n-1]) {
+        case 'h':
+            setTriggerMotionCeasedTime_ms(inputTrigTime * 3600000);
+            break;
+        case 'm':
+            setTriggerMotionCeasedTime_ms(inputTrigTime * 60000);
+            break;
+        case 's':
+            setTriggerMotionCeasedTime_ms(inputTrigTime * 1000);
+            break;
+        default:
+            bleComStringWrite("Your input was not understood. Set trig time to default: 3 seconds.");
+            setTriggerMotionCeasedTime_ms(3000);
+            break;
+    }
 }
