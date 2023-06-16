@@ -10,7 +10,7 @@
 
 //=====[Declaration of public defines]=========================================
 
-#define DATE_AND_TIME_DEFAULT 2023, 6, 13, 16, 47, 1
+#define DATE_AND_TIME_DEFAULT 1999, 12, 31, 23, 59, 59
 
 //=====[Declaration of public data types]======================================
 

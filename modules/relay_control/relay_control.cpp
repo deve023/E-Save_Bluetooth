@@ -32,7 +32,7 @@ DigitalOut relayDeactLed(RELAY_DEACT_LED_PIN);  ///> LED to indicate relay deact
 
 //=====[Declaration and initialization of private global variables]============
 
-bool relayStatus;   ///> Relay status boolean variable.
+static bool relayStatus;   ///> Relay status boolean variable.
 
 //=====[Declarations (prototypes) of private functions]========================
 
@@ -52,8 +52,6 @@ void relayActivate()
 
     relayActLed = ON;
     relayDeactLed = OFF;
-
-    printf("%s\n", "Relay Activated."); // Debug.
 }
 
 void relayDeactivate()
@@ -63,8 +61,6 @@ void relayDeactivate()
 
     relayActLed = OFF;
     relayDeactLed = ON;
-
-    printf("%s\n", "Relay Deactivated."); // Debug.
 }
 
 //=====[Implementations of private functions]==================================

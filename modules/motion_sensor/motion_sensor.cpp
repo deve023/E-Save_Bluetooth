@@ -56,12 +56,10 @@ int motionSensorUpdate()
         motionSensorState = ON;
         motionSensorLed = ON;
         accumulatedMotionCeasedTime = 0;
-        printf("%s\n", "Motion detected.");
     } else {
         motionSensorState = OFF;
         motionSensorLed = OFF;
         accumulatedMotionCeasedTime += dt_ms;
-        printf("%s\n", "Motion ceased.");
     }
 
     return accumulatedMotionCeasedTime;

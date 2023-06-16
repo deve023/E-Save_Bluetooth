@@ -38,9 +38,9 @@ DigitalOut functionalTimeLed(LED2); ///> Led to indicate functional time.
 
 //=====[Declaration and initialization of public global variables]=============
 
-int dt_ms;  ///> Time increment to update module.
-int TriggerCeasedMotionTime; ///> Time to deactivate relay once motion is not detected. Default = 3 seg.
-actuatorState_t actuatorState = ACTUATOR_DISABLE;   ///> State of the Actuator.
+static int dt_ms;  ///> Time increment to update module.
+static int TriggerCeasedMotionTime; ///> Time to deactivate relay once motion is not detected. Default = 3 seg.
+static actuatorState_t actuatorState = ACTUATOR_DISABLE;   ///> State of the Actuator.
 
 //=====[Declarations (prototypes) of private functions]========================
 
@@ -63,7 +63,7 @@ void actuatorInit(int dt)
     printf("%s\n", "Initializing program."); // Debug.
 
     dt_ms = dt;
-    TriggerCeasedMotionTime = 3000; // Default: 3 seg
+    TriggerCeasedMotionTime = 120000; // Default: 3 seg
 
     motionSensorInit(dt);
     relayControlInit();
@@ -73,25 +73,6 @@ void actuatorInit(int dt)
 
 void actuatorUpdate()
 {
-
-    /*
-    motionSensorEnable = isFunctionalTime();
-
-    if(TriggerCeasedMotionTime <= 0 || !(motionSensorEnable)) {
-        motionSensorUpdate();
-        relayActivate();
-        return;
-    }
-
-    int CeasedMotionTime = motionSensorUpdate();
-
-    if(CeasedMotionTime >= TriggerCeasedMotionTime) {
-        relayDeactivate();
-    } else {
-        relayActivate();
-    }
-    */
-
     int CeasedMotionTime = motionSensorUpdate(); // Regardless of Actuator state, the sensor needs to be updated.
 
     if(!isFunctionalTime()) {
@@ -141,8 +122,13 @@ void setTriggerMotionCeasedTime_ms(int time_ms)
     if(time_ms <= 0) {
         TriggerCeasedMotionTime = time_ms;
     } else {
-        TriggerCeasedMotionTime = time_ms;
+        TriggerCeasedMotionTime = 3000; // Default.
     }
+}
+
+int getTriggerTime_ms()
+{
+    return TriggerCeasedMotionTime;
 }
 
 //=====[Implementations of private functions]==================================

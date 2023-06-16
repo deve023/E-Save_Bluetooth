@@ -33,6 +33,13 @@ void actuatorUpdate();
  */
 void setTriggerMotionCeasedTime_ms(int time_ms);
 
+/**
+ * @brief Returns the time set to deactivate relay once motion is not detected.
+ * 
+ * @return Trigger time in miliseconds.
+ */
+int getTriggerTime_ms();
+
 //=====[#include guards - end]=================================================
 
 #endif // _ACTUATOR_H_

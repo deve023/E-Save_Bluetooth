@@ -16,12 +16,10 @@
 
 //=====[Declaration of external public global variables]=======================
 
-struct tm startTime;    ///> Time to activate sensor and control logic.
-struct tm endTime;      ///> Time to deactivate sensor and control logic.
-
-//=====[Declaration and initialization of public global variables]=============
-
 //=====[Declaration and initialization of private global variables]============
+
+static struct tm startTime;    ///> Time to activate sensor and control logic.
+static struct tm endTime;      ///> Time to deactivate sensor and control logic.
 
 //=====[Declarations (prototypes) of private functions]========================
 
@@ -49,8 +47,6 @@ void dateAndTimeWrite( int year, int month, int day,
     rtcTime.tm_isdst = -1;
 
     set_time( mktime( &rtcTime ) ); // Sets internal RTC time.
-
-    printf("%s\n", "Time and date set.");
 }
 
 void setFunctionalTimePeriod()
