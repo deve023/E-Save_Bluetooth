@@ -18,6 +18,7 @@
 #define BLE_COM_BAUDRATE 9600
 
 #define DATE_AND_TIME_NUMBER_OF_CHARS 14
+#define FUNCTIONAL_TIME_NUMBER_OF_CHARS 12
 
 //=====[Declaration of private data types]=====================================
 
@@ -39,6 +40,7 @@ UnbufferedSerial bleCom(TX, RX, BLE_COM_BAUDRATE);
 static bleComState_t bleComState = BLE_PROCESS_COMMAND;
 
 static char newDateAndTime[DATE_AND_TIME_NUMBER_OF_CHARS];
+static char newFunctionalTime[FUNCTIONAL_TIME_NUMBER_OF_CHARS];
 static char newTrigTime[50];
 
 static char aux[50];
@@ -136,7 +138,24 @@ static void bleComSetNewTrigTime(int n);
  */
 static void bleCommandPrintTrigTime();
 
+/**
+ * @brief Initiates process of setting new functional time.
+ * 
+ */
+static void bleCommandNewFunctionalTime();
 
+/**
+ * @brief Gets new char for the new functional time.
+ * 
+ * @param[in] c new char for the new functional time.
+ */
+static void bleComFunctionalTimeUpdate(char c);
+
+/**
+ * @brief Sets new functional time according to variable newFunctionalTime[].
+ * 
+ */
+static void bleComSeFunctionalTime();
 
 //=====[Implementations of public functions]===================================
 
@@ -157,6 +176,7 @@ void bleComUpdate()
                 bleComDateAndTimeUpdate(c);
                 break;
             case BLE_SET_FUNCTIONAL_TIME:
+                bleComFunctionalTimeUpdate(c);
                 break;
             case BLE_SET_TRIG_TIME:
                 bleComNewTrigUpdate(c);
@@ -181,7 +201,7 @@ static char bleComCharRead()
 static void setDefaultDateAndTimeValues()
 {
     dateAndTimeWrite(DATE_AND_TIME_DEFAULT);
-    setFunctionalTimePeriod();
+    setFunctionalTimePeriod(FUNCTIONAL_TIME_DEFAULT);
 }
 
 static void bleProcessCommand(char c)
@@ -194,7 +214,7 @@ static void bleProcessCommand(char c)
             bleCommandPrintTrigTime();
             break;
         case '3':
-            // Set functional period.
+            bleCommandNewFunctionalTime();
             break;
         case '4':
             // Read functional period.
@@ -382,4 +402,77 @@ static void bleComSetNewTrigTime(int n)
             setTriggerMotionCeasedTime_ms(3000);
             break;
     }
+}
+
+static void bleCommandNewFunctionalTime()
+{
+    bleComStringWrite("\r\nType two digits for the start hour (00-23): ");
+    bleComState = BLE_SET_FUNCTIONAL_TIME;
+}
+
+static void bleComFunctionalTimeUpdate(char c)
+{
+    static int numberOfFunctionalTimeChar = 0;
+
+    newFunctionalTime[numberOfFunctionalTimeChar++] = c;
+
+    sprintf(aux, "%c", c);
+    bleComStringWrite(aux);
+
+    if(numberOfFunctionalTimeChar >= FUNCTIONAL_TIME_NUMBER_OF_CHARS) {
+        bleComState = BLE_PROCESS_COMMAND;
+        numberOfFunctionalTimeChar = 0;
+        bleComSeFunctionalTime();
+        bleComStringWrite("\r\n");
+        bleComStringWrite("Functional time has been set.\r\n");
+    } else if(numberOfFunctionalTimeChar == 2) {
+        bleComStringWrite("\r\n");
+        bleComStringWrite("Type two digits for the start minute (00-59): ");
+    } else if(numberOfFunctionalTimeChar == 4) {
+        bleComStringWrite("\r\n");
+        bleComStringWrite("Type two digits for the start second (00-59): ");
+    } else if(numberOfFunctionalTimeChar == 6) {
+        bleComStringWrite("\r\n");
+        bleComStringWrite("Type two digits for the finish hour (00-23): ");
+    } else if(numberOfFunctionalTimeChar == 8) {
+        bleComStringWrite("\r\n");
+        bleComStringWrite("Type two digits for the finish minutes (00-59): ");
+    } else if(numberOfFunctionalTimeChar == 10) {
+        bleComStringWrite("\r\n");
+        bleComStringWrite("Type two digits for the finish seconds (00-59): ");
+    }
+}
+
+static void bleComSeFunctionalTime()
+{
+    char sHour[3];
+    char sMin[3];
+    char sSec[3];
+    char eHour[3];
+    char eMin[3];
+    char eSec[3];
+
+    for(int i = 0; i < DATE_AND_TIME_NUMBER_OF_CHARS; i++) {
+        if(i < 2)
+            sHour[i] = newFunctionalTime[i];
+        else if(i < 4) {
+            sMin[i-2] = newFunctionalTime[i];
+        } else if(i < 6) {
+            sSec[i-4] = newFunctionalTime[i];
+        } else if(i < 8) {
+            eHour[i-6] = newFunctionalTime[i];
+        } else if(i < 10) {
+            eMin[i-8] = newFunctionalTime[i];
+        } else {
+            eSec[i-10] = newFunctionalTime[i];
+        }
+    }
+    sHour[2] = '\0';
+    sMin[2] = '\0';
+    sSec[2] = '\0';
+    eHour[2] = '\0';
+    eMin[2] = '\0';
+    eSec[2] = '\0';
+
+    setFunctionalTimePeriod(atoi(sHour), atoi(sMin), atoi(sSec), atoi(eHour), atoi(eMin), atoi(eSec));
 }

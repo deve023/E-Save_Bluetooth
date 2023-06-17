@@ -51,42 +51,50 @@ void dateAndTimeWrite( int year, int month, int day,
     set_time( mktime( &rtcTime ) ); // Sets internal RTC time.
 }
 
-void setFunctionalTimePeriod()
+void setFunctionalTimePeriod(int sHour, int sMin, int sSec, int eHour, int eMin, int eSec)
 {
-    startTime.tm_year = 10;
-    startTime.tm_mon  = 0;
-    startTime.tm_mday = 1;
-    startTime.tm_hour = 8;
-    startTime.tm_min  = 0;
-    startTime.tm_sec  = 0;
-    startTime.tm_isdst = -1;
+    startTime.tm_hour = sHour;
+    startTime.tm_min  = sMin;
+    startTime.tm_sec  = sSec;
 
-    endTime.tm_year = 10;
-    endTime.tm_mon  = 0;
-    endTime.tm_mday = 1;
-    endTime.tm_hour = 16;
-    endTime.tm_min  = 0;
-    endTime.tm_sec  = 0;
-    endTime.tm_isdst = -1;
-
-    printf("%s\n", "Functional time period set.");
+    endTime.tm_hour = eHour;
+    endTime.tm_min  = eMin;
+    endTime.tm_sec  = eSec;
 }
 
 bool isFunctionalTime()
 {
-    bool isFuncTime = false;
+    bool isAfterStartTime = false;
+    bool isBeforeEndTime = false;
+
     time_t epochSeconds = time(NULL);
     struct tm * now = localtime(&epochSeconds);
 
-    if(now->tm_hour > startTime.tm_hour & now->tm_hour < endTime.tm_hour) {
-        isFuncTime = true;
-    } else if(now->tm_min > startTime.tm_min & now->tm_min < endTime.tm_min) {
-        isFuncTime = true;
-    } else if(now->tm_sec > startTime.tm_sec & now->tm_sec < endTime.tm_sec) {
-        isFuncTime = true;
+    if(now->tm_hour > startTime.tm_hour) {
+        isAfterStartTime = true;
+    } else if(now->tm_hour == startTime.tm_hour)  {
+        if(now->tm_min > startTime.tm_min) {
+            isAfterStartTime = true;
+        } else if(now->tm_min == startTime.tm_min) {
+            if(now->tm_sec > startTime.tm_sec) {
+                isAfterStartTime = true;
+            }
+        }
     }
 
-    return isFuncTime;
+    if(now->tm_hour < endTime.tm_hour) {
+        isBeforeEndTime = true;
+    } else if(now->tm_hour == endTime.tm_hour)  {
+        if(now->tm_min < endTime.tm_min) {
+            isBeforeEndTime = true;
+        } else if(now->tm_min == endTime.tm_min) {
+            if(now->tm_sec < endTime.tm_sec) {
+                isBeforeEndTime = true;
+            }
+        }
+    }
+
+    return isAfterStartTime && isBeforeEndTime;
 }
 
 //=====[Implementations of private functions]==================================

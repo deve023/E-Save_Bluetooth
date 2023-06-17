@@ -11,6 +11,7 @@
 //=====[Declaration of public defines]=========================================
 
 #define DATE_AND_TIME_DEFAULT 2000, 1, 1, 0, 0, 0
+#define FUNCTIONAL_TIME_DEFAULT 0, 0, 0, 0, 0, 0
 
 //=====[Declaration of public data types]======================================
 
@@ -33,8 +34,10 @@ void dateAndTimeWrite( int year, int month, int day,
 /**
  * @brief Sets a time period in which the program is functional.
  * 
+ * @param[in] s Start time.
+ * @param[in] e End time.
  */
-void setFunctionalTimePeriod();
+void setFunctionalTimePeriod(int sHour, int sMin, int sSec, int eHour, int eMon, int eSec);
 
 /**
  * @brief Checks if the current time is within the functional period.
