@@ -8,6 +8,8 @@
 
 #include "date_and_time.h"
 
+#include "time.h"
+
 //=====[Declaration of private defines]========================================
 
 //=====[Declaration of private data types]=====================================
@@ -51,21 +53,40 @@ void dateAndTimeWrite( int year, int month, int day,
 
 void setFunctionalTimePeriod()
 {
+    startTime.tm_year = 10;
+    startTime.tm_mon  = 0;
+    startTime.tm_mday = 1;
     startTime.tm_hour = 8;
     startTime.tm_min  = 0;
     startTime.tm_sec  = 0;
+    startTime.tm_isdst = -1;
 
+    endTime.tm_year = 10;
+    endTime.tm_mon  = 0;
+    endTime.tm_mday = 1;
     endTime.tm_hour = 16;
     endTime.tm_min  = 0;
     endTime.tm_sec  = 0;
+    endTime.tm_isdst = -1;
 
     printf("%s\n", "Functional time period set.");
 }
 
 bool isFunctionalTime()
 {
-    return true;
+    bool isFuncTime = false;
+    time_t epochSeconds = time(NULL);
+    struct tm * now = localtime(&epochSeconds);
+
+    if(now->tm_hour > startTime.tm_hour & now->tm_hour < endTime.tm_hour) {
+        isFuncTime = true;
+    } else if(now->tm_min > startTime.tm_min & now->tm_min < endTime.tm_min) {
+        isFuncTime = true;
+    } else if(now->tm_sec > startTime.tm_sec & now->tm_sec < endTime.tm_sec) {
+        isFuncTime = true;
+    }
+
+    return isFuncTime;
 }
 
 //=====[Implementations of private functions]==================================
-

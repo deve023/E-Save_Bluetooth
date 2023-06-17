@@ -10,7 +10,7 @@
 
 //=====[Declaration of public defines]=========================================
 
-#define DATE_AND_TIME_DEFAULT 1999, 12, 31, 23, 59, 59
+#define DATE_AND_TIME_DEFAULT 2000, 1, 1, 0, 0, 0
 
 //=====[Declaration of public data types]======================================
 
