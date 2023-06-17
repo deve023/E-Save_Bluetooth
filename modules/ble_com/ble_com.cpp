@@ -157,6 +157,12 @@ static void bleComFunctionalTimeUpdate(char c);
  */
 static void bleComSeFunctionalTime();
 
+/**
+ * @brief Prints the functional time period.
+ * 
+ */
+static void bleCommandPrintFunctionalTime();
+
 //=====[Implementations of public functions]===================================
 
 void bleComInit()
@@ -217,13 +223,16 @@ static void bleProcessCommand(char c)
             bleCommandNewFunctionalTime();
             break;
         case '4':
-            // Read functional period.
+            bleCommandPrintFunctionalTime();
             break;
         case '5':
             bleCommandNewDateAndTime();
             break;
         case '6':
             bleCommandPrintDateAndTime();
+            break;
+        case 'h':
+            printAcceptableCommands();
             break;
         default:
             bleComStringWrite("Command not understood. Please review acceptable commands:\r\n");
@@ -245,6 +254,7 @@ static void printAcceptableCommands()
     bleComStringWrite("Send '4' to get funcional period.\r\n");
     bleComStringWrite("Send '5' to set date and time.\r\n");
     bleComStringWrite("Send '6' to get current date and time.\r\n");
+    bleComStringWrite("Send 'h' for help.\r\n");
     bleComStringWrite("\r\n");
 }
 
@@ -475,4 +485,15 @@ static void bleComSeFunctionalTime()
     eSec[2] = '\0';
 
     setFunctionalTimePeriod(atoi(sHour), atoi(sMin), atoi(sSec), atoi(eHour), atoi(eMin), atoi(eSec));
+}
+
+static void bleCommandPrintFunctionalTime()
+{
+    int v[6];
+    functionalTimeRead(v);
+
+    sprintf(aux,"Functional time start: %d:%d:%d.\r\n", v[0], v[1], v[2]);
+    bleComStringWrite(aux);
+    sprintf(aux,"Functional time end: %d:%d:%d.\r\n", v[3], v[4], v[5]);
+    bleComStringWrite(aux);
 }

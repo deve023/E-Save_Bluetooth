@@ -25,6 +25,22 @@
 char* dateAndTimeRead();
 
 /**
+ * @brief Reads the functional time period and saves the data
+ * in vector v passed by argument:
+ *
+ * v[0]: start hour
+ * v[1]: start minute
+ * v[2]: start second
+ * v[3]: finish hour
+ * v[4]: finish minute
+ * v[5]: finish second
+ * 
+ * v needs to have allocated memory for 6 int components.
+ *
+ */
+void functionalTimeRead(int *v);
+
+/**
  * @brief Sets a date and time.
  * 
  */

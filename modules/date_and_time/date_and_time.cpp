@@ -34,6 +34,16 @@ char* dateAndTimeRead()
     return ctime(&epochSeconds);    // Starts the internal RTC.
 }
 
+void functionalTimeRead(int *v)
+{
+    v[0] = startTime.tm_hour;
+    v[1] = startTime.tm_min;
+    v[2] = startTime.tm_sec;
+    v[3] = endTime.tm_hour;
+    v[4] = endTime.tm_min;
+    v[5] = endTime.tm_sec;
+}
+
 void dateAndTimeWrite( int year, int month, int day, 
                        int hour, int minute, int second )
 {
