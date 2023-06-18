@@ -8,14 +8,10 @@
 #ifndef _MOTION_SENSOR_H_
 #define _MOTION_SENSOR_H_
 
-//=====[Declaration of public defines]=========================================
-
-//=====[Declaration of public data types]======================================
-
 //=====[Declarations (prototypes) of public functions]=========================
 
 /**
- * @brief Initializes motion sensor. Sensor deactivated.
+ * @brief Initializes motion sensor.
  * 
  */
 void motionSensorInit(int dt);
@@ -31,7 +27,7 @@ bool motionSensorRead();
  * @brief Updates and returns the accumulated time that the sensor did not
  * detect motion.
  *
- * @return Accumulated non motion detected time.
+ * @return Accumulated non motion detected time in miliseconds.
  */
 int motionSensorUpdate();
 

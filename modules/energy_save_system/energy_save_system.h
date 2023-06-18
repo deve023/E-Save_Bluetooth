@@ -1,4 +1,4 @@
-/*! @file energy_save_system.h Header file for the system module.
+/*! @file energy_save_system.h Header file for the integrated system module.
  *
  * @note This module integrates all other modules.
  */
@@ -10,20 +10,19 @@
 
 //=====[Declaration of public defines]=========================================
 
+// Mainloop dt is 1 ms so the bluetooth serial com does not miss any data.
 #define SYSTEM_TIME_INCREMENT_MS 1   ///> Time interval for mainloop.
-
-//=====[Declaration of public data types]======================================
 
 //=====[Declarations (prototypes) of public functions]=========================
 
 /**
- * @brief Initializes modules.
+ * @brief Initializes the system.
  * 
  */
 void energySaveSystemInit();
 
 /**
- * @brief Updates modules.
+ * @brief Updates the modules.
  * 
  */
 void energySaveSystemUpdate();

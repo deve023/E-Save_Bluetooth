@@ -14,27 +14,19 @@
 
 #define RELAY_PIN PF_2  ///> Relay control pin.
 
-#define RELAY_ACT_LED_PIN LED3
-#define RELAY_DEACT_LED_PIN PH_1
-
-//=====[Declaration of private data types]=====================================
+#define RELAY_ACT_LED_PIN LED3      ///> LED pin to indicate relay active.
+#define RELAY_DEACT_LED_PIN PH_1    //> LED pin to indicate relay inactive.
 
 //=====[Declaration and initialization of public global objects]===============
 
-DigitalInOut relayPin(RELAY_PIN);   ///> DigitalInOut relay pin.
+DigitalInOut relayPin(RELAY_PIN);   ///> Relay control pin.
 
-DigitalOut relayActLed(RELAY_ACT_LED_PIN);  ///> LED to indicated relay activated.
-DigitalOut relayDeactLed(RELAY_DEACT_LED_PIN);  ///> LED to indicate relay deactivated.
-
-//=====[Declaration of external public global variables]=======================
-
-//=====[Declaration and initialization of public global variables]=============
+DigitalOut relayActLed(RELAY_ACT_LED_PIN);      ///> LED to indicate relay activate.
+DigitalOut relayDeactLed(RELAY_DEACT_LED_PIN);  ///> LED to indicate relay inactive.
 
 //=====[Declaration and initialization of private global variables]============
 
 static bool relayStatus;   ///> Relay status boolean variable.
-
-//=====[Declarations (prototypes) of private functions]========================
 
 //=====[Implementations of public functions]===================================
 

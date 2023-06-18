@@ -1,37 +1,26 @@
-/*! @file date_and_time.cpp Implementation of the relay date and time module.
+/*! @file date_and_time.cpp Implementation of the date and time module.
  *
  */
 
 //=====[Libraries]=============================================================
 
 #include "mbed.h"
+#include "time.h"
 
 #include "date_and_time.h"
 
-#include "time.h"
-
-//=====[Declaration of private defines]========================================
-
-//=====[Declaration of private data types]=====================================
-
-//=====[Declaration and initialization of public global objects]===============
-
-//=====[Declaration of external public global variables]=======================
-
 //=====[Declaration and initialization of private global variables]============
 
-static struct tm startTime;    ///> Time to activate sensor and control logic.
-static struct tm endTime;      ///> Time to deactivate sensor and control logic.
-
-//=====[Declarations (prototypes) of private functions]========================
+static struct tm startTime;    ///> Start time for the functional time.
+static struct tm endTime;      ///> End time for the functional time.
 
 //=====[Implementations of public functions]===================================
 
 char* dateAndTimeRead()
 {
-    time_t epochSeconds;
-    epochSeconds = time(NULL);
-    return ctime(&epochSeconds);    // Starts the internal RTC.
+    time_t current_time;
+    current_time = time(NULL);
+    return ctime(&current_time);
 }
 
 void functionalTimeRead(int *v)
@@ -44,8 +33,7 @@ void functionalTimeRead(int *v)
     v[5] = endTime.tm_sec;
 }
 
-void dateAndTimeWrite( int year, int month, int day, 
-                       int hour, int minute, int second )
+void dateAndTimeWrite( int year, int month, int day, int hour, int minute, int second )
 {
     struct tm rtcTime;
 
@@ -58,7 +46,7 @@ void dateAndTimeWrite( int year, int month, int day,
 
     rtcTime.tm_isdst = -1;
 
-    set_time( mktime( &rtcTime ) ); // Sets internal RTC time.
+    set_time( mktime( &rtcTime ) );
 }
 
 void setFunctionalTimePeriod(int sHour, int sMin, int sSec, int eHour, int eMin, int eSec)
@@ -77,8 +65,8 @@ bool isFunctionalTime()
     bool isAfterStartTime = false;
     bool isBeforeEndTime = false;
 
-    time_t epochSeconds = time(NULL);
-    struct tm * now = localtime(&epochSeconds);
+    time_t current_time = time(NULL);
+    struct tm * now = localtime(&current_time);
 
     if(now->tm_hour > startTime.tm_hour) {
         isAfterStartTime = true;

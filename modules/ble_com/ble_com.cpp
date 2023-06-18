@@ -13,12 +13,12 @@
 
 //=====[Declaration of private defines]========================================
 
-#define RX PD_6
-#define TX PD_5
-#define BLE_COM_BAUDRATE 9600
+#define RX PD_6                 ///> UART Rx pin.
+#define TX PD_5                 ///> UART Tx pin.
+#define BLE_COM_BAUDRATE 9600   ///> UART baudrate.
 
-#define DATE_AND_TIME_NUMBER_OF_CHARS 14
-#define FUNCTIONAL_TIME_NUMBER_OF_CHARS 12
+#define DATE_AND_TIME_NUMBER_OF_CHARS 14    ///> Number of chars input by the user when setting the current date and time.
+#define FUNCTIONAL_TIME_NUMBER_OF_CHARS 12  ///> Number of chars input by the user when setting the functional time.
 
 //=====[Declaration of private data types]=====================================
 
@@ -31,31 +31,29 @@ typedef enum {
 
 //=====[Declaration and initialization of public global objects]===============
 
-UnbufferedSerial bleCom(TX, RX, BLE_COM_BAUDRATE);
-
-//=====[Declaration of external public global variables]=======================
+UnbufferedSerial bleCom(TX, RX, BLE_COM_BAUDRATE);  ///> UART comunication.
 
 //=====[Declaration and initialization of public global variables]=============
 
-static bleComState_t bleComState = BLE_PROCESS_COMMAND;
+static bleComState_t bleComState = BLE_PROCESS_COMMAND; ///> Bluetooth comunication status.
 
-static char newDateAndTime[DATE_AND_TIME_NUMBER_OF_CHARS];
-static char newFunctionalTime[FUNCTIONAL_TIME_NUMBER_OF_CHARS];
-static char newTrigTime[50];
+static char newDateAndTime[DATE_AND_TIME_NUMBER_OF_CHARS];      ///> Buffer for the new date and time.
+static char newFunctionalTime[FUNCTIONAL_TIME_NUMBER_OF_CHARS]; ///> Buffer for the functional time.
+static char newTrigTime[50];                                    ///> Buffer for the new trigger time.
 
-static char aux[50];
+static char aux[50];    ///> Auxiliar vector.
 
 //=====[Declarations (prototypes) of private functions]========================
 
 /**
  * @brief Receives char from Bluetooh communication if there is a char to be read.
  * 
- * @return read char. If nothing to be read: returns '\0'.
+ * @return Read char. If there is nothing to be read it returns '\0'.
  */
 static char bleComCharRead();
 
 /**
- * @brief Transmits a string through Bluetooth.
+ * @brief Transmits a string through bleCom.
  * 
  * @param[in] s String to send.
  */
@@ -75,17 +73,10 @@ static void setDefaultDateAndTimeValues();
 static void bleProcessCommand(char c);
 
 /**
- * @brief Explain acceptabl commands to process.
+ * @brief Explain acceptable commands that the user interface can process.
  * 
  */
 static void printAcceptableCommands();
-
-/**
- * @brief Process received command.
- * 
- * @param[in] c Command to process.
- */
-static void bleProcessCommand(char c);
 
 /**
  * @brief Initiates process of setting new date and time.
@@ -94,9 +85,9 @@ static void bleProcessCommand(char c);
 static void bleCommandNewDateAndTime();
 
 /**
- * @brief Gets new char for the new date and time.
+ * @brief Process char for the new date and time.
  * 
- * @param[in] c new char from the date and time.
+ * @param[in] c new char for the new date and time.
  */
 static void bleComDateAndTimeUpdate(char c);
 
@@ -107,45 +98,47 @@ static void bleComDateAndTimeUpdate(char c);
 static void bleComSetDateAndTime();
 
 /**
- * @brief Sends current date and time.
+ * @brief Prints current date and time through bleCom.
  * 
  */
 static void bleCommandPrintDateAndTime();
 
 /**
- * @brief Initiates process of setting new trig time.
+ * @brief Initiates process of setting new trigger time.
  * 
  */
 static void bleCommandNewTrigTime();
 
 /**
- * @brief Gets new char for the new date and time.
+ * @brief Process char for the trigger time.
  * 
- * @param[in] c new char from the date and time.
+ * @param[in] c new char for the new trigger time.
  */
 static void bleComNewTrigUpdate(char c);
 
 /**
- * @brief Sets new date and time according to variable newDateAndTime[].
+ * @brief Sets new trigger time according to variable newTriggerTime[].
  * 
  * @param[in] n Number of characters input by user.
  */
 static void bleComSetNewTrigTime(int n);
 
 /**
- * @brief Sends current trigger time.
+ * @brief Prints current trigger time through bleCom.
+ *
+ * Format example: "1h 30m 59s"
  * 
  */
 static void bleCommandPrintTrigTime();
 
 /**
- * @brief Initiates process of setting new functional time.
+ * @brief Initiates process of setting a new functional time.
  * 
  */
 static void bleCommandNewFunctionalTime();
 
 /**
- * @brief Gets new char for the new functional time.
+ * @brief Process char for the new functional time.
  * 
  * @param[in] c new char for the new functional time.
  */
@@ -158,7 +151,7 @@ static void bleComFunctionalTimeUpdate(char c);
 static void bleComSeFunctionalTime();
 
 /**
- * @brief Prints the functional time period.
+ * @brief Prints the functional time period through bleCom.
  * 
  */
 static void bleCommandPrintFunctionalTime();
@@ -248,13 +241,13 @@ static void bleComStringWrite(const char* s)
 static void printAcceptableCommands()
 {
     bleComStringWrite("Acceptable commands:\r\n");
-    bleComStringWrite("Send '1' to set trigger time.\r\n");
-    bleComStringWrite("Send '2' to get current trigger time.\r\n");
-    bleComStringWrite("Send '3' to set funcional period.\r\n");
-    bleComStringWrite("Send '4' to get funcional period.\r\n");
-    bleComStringWrite("Send '5' to set date and time.\r\n");
-    bleComStringWrite("Send '6' to get current date and time.\r\n");
-    bleComStringWrite("Send 'h' for help.\r\n");
+    bleComStringWrite("Press '1' to set trigger time.\r\n");
+    bleComStringWrite("Press '2' to get current trigger time.\r\n");
+    bleComStringWrite("Press '3' to set funcional period.\r\n");
+    bleComStringWrite("Press '4' to get funcional period.\r\n");
+    bleComStringWrite("Press '5' to set date and time.\r\n");
+    bleComStringWrite("Press '6' to get current date and time.\r\n");
+    bleComStringWrite("Press 'h' for help.\r\n");
     bleComStringWrite("\r\n");
 }
 
@@ -328,8 +321,7 @@ static void bleComSetDateAndTime()
     minute[2] = '\0';
     second[2] = '\0';
 
-    dateAndTimeWrite(atoi(year), atoi(month), atoi(day), 
-        atoi(hour), atoi(minute), atoi(second));
+    dateAndTimeWrite(atoi(year), atoi(month), atoi(day), atoi(hour), atoi(minute), atoi(second));
 }
 
 static void bleCommandPrintDateAndTime()
@@ -358,7 +350,7 @@ static void bleCommandPrintTrigTime()
 
 static void bleCommandNewTrigTime()
 {
-    bleComStringWrite("\r\nType required wait time followed by 'h', 'm' or 's' to indicate unit of measurement: ");
+    bleComStringWrite("\r\nType required trigger time followed by 'h', 'm' or 's' to indicate unit of measurement: ");
     bleComState = BLE_SET_TRIG_TIME;
 }
 
@@ -408,8 +400,8 @@ static void bleComSetNewTrigTime(int n)
             setTriggerMotionCeasedTime_ms(inputTrigTime * 1000);
             break;
         default:
-            bleComStringWrite("Your input was not understood. Set trig time to default: 3 seconds.");
-            setTriggerMotionCeasedTime_ms(3000);
+            bleComStringWrite("Your input was not understood. Set trig time to default: 5 seconds.");
+            setTriggerMotionCeasedTime_ms(TRIGGER_TIME_DEFAULT);
             break;
     }
 }

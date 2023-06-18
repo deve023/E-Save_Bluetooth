@@ -5,13 +5,12 @@
 //=====[Libraries]=============================================================
 
 #include "mbed.h"
-
 #include "arm_book_lib.h"
 
 #include "motion_sensor.h"
 
-#define SIGNAL_PIN PG_0 ///> Sensor signal pin define.
-#define MOTION_SENSOR_LED_PIN LED1 // PB_0
+#define SIGNAL_PIN PG_0             ///> Sensor signal pin.
+#define MOTION_SENSOR_LED_PIN LED1  ///> LED to indicate motion detected.
 
 //=====[Declaration of private defines]========================================
 
@@ -19,20 +18,14 @@
 
 //=====[Declaration and initialization of public global objects]===============
 
-DigitalIn motionSensorOutputSignal(SIGNAL_PIN);   ///> Sensor signal pin.
-DigitalOut motionSensorLed(MOTION_SENSOR_LED_PIN);  ///> Led to indicate sensor status.
-
-//=====[Declaration of external public global variables]=======================
-
-//=====[Declaration and initialization of public global variables]=============
+DigitalIn motionSensorOutputSignal(SIGNAL_PIN);     ///> Sensor signal pin.
+DigitalOut motionSensorLed(MOTION_SENSOR_LED_PIN);  ///> LED to indicate motion detected.
 
 //=====[Declaration and initialization of private global variables]============
 
-static bool motionSensorState;  ///> Sensor state: ON/OFF.
+static bool motionSensorState;  ///> Sensor state: ON/OFF = motion DETECTED/CEASED.
 
 static int dt_ms = 0;   ///> Time increment to update accumulated ceased motion time.
-
-//=====[Declarations (prototypes) of private functions]========================
 
 //=====[Implementations of public functions]===================================
 

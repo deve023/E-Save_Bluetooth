@@ -15,8 +15,8 @@
 
 //=====[Declaration of private defines]========================================
 
-#define ON_BUTTON PB_1
-#define OFF_BUTTON PC_2
+#define ON_BUTTON PB_1  ///> Button to turn actuator logic on.
+#define OFF_BUTTON PC_2 ///> Button to turn actuator logic off: relay disconected regardless of time / sensor status.
 
 //=====[Declaration of private data types]=====================================
 
@@ -29,18 +29,16 @@ typedef enum {
 
 //=====[Declaration and initialization of public global objects]===============
 
-DigitalIn onButton(ON_BUTTON);      ///> On button.
-DigitalIn offButton(OFF_BUTTON);    ///> Off button.
+DigitalIn onButton(ON_BUTTON);      ///> On button (Button to turn actuator logic on).
+DigitalIn offButton(OFF_BUTTON);    ///> Off button (Button to turn actuator logic off: relay disconected regardless of time / sensor status).
 
-DigitalOut functionalTimeLed(LED2); ///> Led to indicate functional time.
-
-//=====[Declaration of external public global variables]=======================
+DigitalOut functionalTimeLed(LED2); ///> Led to indicate if the current time is a functional time.
 
 //=====[Declaration and initialization of public global variables]=============
 
 static int dt_ms;  ///> Time increment to update module.
 static int TriggerCeasedMotionTime; ///> Time to deactivate relay once motion is not detected. Default = 3 seg.
-static actuatorState_t actuatorState = ACTUATOR_DISABLE;   ///> State of the Actuator.
+static actuatorState_t actuatorState = ACTUATOR_DISABLE;   ///> Initial state of the Actuator. Updated as soon as actuatorUpdate() is called.
 
 //=====[Declarations (prototypes) of private functions]========================
 
@@ -60,15 +58,11 @@ static void offButtonPressed();
 
 void actuatorInit(int dt)
 {
-    printf("%s\n", "Initializing program."); // Debug.
-
     dt_ms = dt;
-    TriggerCeasedMotionTime = 120000; // Default: 3 seg
+    TriggerCeasedMotionTime = TRIGGER_TIME_DEFAULT;
 
     motionSensorInit(dt);
     relayControlInit();
-
-    printf("%s\n", "Inizialitation complete."); // Debug.
 }
 
 void actuatorUpdate()
@@ -122,7 +116,7 @@ void setTriggerMotionCeasedTime_ms(int time_ms)
     if(time_ms > 0) {
         TriggerCeasedMotionTime = time_ms;
     } else {
-        TriggerCeasedMotionTime = 3000; // Default.
+        TriggerCeasedMotionTime = TRIGGER_TIME_DEFAULT;
     }
 }
 
@@ -130,5 +124,3 @@ int getTriggerTime_ms()
 {
     return TriggerCeasedMotionTime;
 }
-
-//=====[Implementations of private functions]==================================

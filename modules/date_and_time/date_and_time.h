@@ -1,6 +1,6 @@
-/*! @file date_and_time.h Header file for the day and time module.
+/*! @file date_and_time.h Header file for the date and time module.
  *
- * @note This module serves to set the date and time of the system.
+ * @note This module serves to handle current date and time and functional time settings.
  */
 
 //=====[#include guards - begin]===============================================
@@ -10,17 +10,15 @@
 
 //=====[Declaration of public defines]=========================================
 
-#define DATE_AND_TIME_DEFAULT 2000, 1, 1, 0, 0, 0
-#define FUNCTIONAL_TIME_DEFAULT 0, 0, 0, 0, 0, 0
-
-//=====[Declaration of public data types]======================================
+#define DATE_AND_TIME_DEFAULT 2000, 1, 1, 0, 0, 0   ///> Default date and time:     (YYYY, MM, DD, hh, mm, ss)
+#define FUNCTIONAL_TIME_DEFAULT 0, 0, 0, 0, 0, 0    ///> Default functional time:   (hh, mm, dd, hh, mm, dd)
 
 //=====[Declarations (prototypes) of public functions]=========================
 
 /**
  * @brief Reads the current date and time.
  * 
- * @return String [char *] current date and time.
+ * @return String [char *]: current date and time.
  */
 char* dateAndTimeRead();
 
@@ -43,15 +41,17 @@ void functionalTimeRead(int *v);
 /**
  * @brief Sets a date and time.
  * 
+ * @param[in] current_date_and_time YYYY, MM, DD, hh, mm, ss as integers.
  */
-void dateAndTimeWrite( int year, int month, int day, 
-                       int hour, int minute, int second );
+void dateAndTimeWrite(int year, int month, int day, int hour, int minute, int second);
 
 /**
  * @brief Sets a time period in which the program is functional.
  * 
- * @param[in] s Start time.
- * @param[in] e End time.
+ * Prerequisite: start_time has to be earlier than end_time.
+ *
+ * @param[in] start_time hh, mm, ss as integers.
+ * @param[in] end_time hh, mm, ss as integers.
  */
 void setFunctionalTimePeriod(int sHour, int sMin, int sSec, int eHour, int eMon, int eSec);
 

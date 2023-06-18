@@ -1,4 +1,4 @@
-/*! @file relay_control.h Header file for the motion sensor module.
+/*! @file relay_control.h Header file for the relay control module.
  *
  * @note This module encapsulates the behaivor of the relay control to
  * turn on/off the connected electric appliance.
@@ -8,10 +8,6 @@
 
 #ifndef _RELAY_CONTROL_H_
 #define _RELAY_CONTROL_H_
-
-//=====[Declaration of public defines]=========================================
-
-//=====[Declaration of public data types]======================================
 
 //=====[Declarations (prototypes) of public functions]=========================
 
