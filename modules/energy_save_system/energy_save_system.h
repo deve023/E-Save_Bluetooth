@@ -10,7 +10,7 @@
 
 //=====[Declaration of public defines]=========================================
 
-#define SYSTEM_TIME_INCREMENT_MS 100   ///> Time interval for mainloop.
+#define SYSTEM_TIME_INCREMENT_MS 10   ///> Time interval for mainloop.
 
 //=====[Declaration of public data types]======================================
 

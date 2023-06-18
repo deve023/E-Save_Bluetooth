@@ -13,8 +13,8 @@
 
 //=====[Declaration of private defines]========================================
 
-#define RX USBRX //PD_5
-#define TX USBTX //PD_6
+#define RX PD_6
+#define TX PD_5
 #define BLE_COM_BAUDRATE 9600
 
 #define DATE_AND_TIME_NUMBER_OF_CHARS 14
@@ -270,9 +270,6 @@ static void bleComDateAndTimeUpdate(char c)
 
     newDateAndTime[numberOfDateAndTimeChar++] = c;
 
-    sprintf(aux, "%c", c);
-    bleComStringWrite(aux);
-
     if(numberOfDateAndTimeChar >= DATE_AND_TIME_NUMBER_OF_CHARS) {
         bleComState = BLE_PROCESS_COMMAND;
         numberOfDateAndTimeChar = 0;
@@ -368,9 +365,6 @@ static void bleComNewTrigUpdate(char c)
 
     newTrigTime[numberOfTrigTimeChar++] = c;
 
-    sprintf(aux, "%c", c);
-    bleComStringWrite(aux);
-
     switch(c){
         case 'h':
         case 'm':
@@ -425,9 +419,6 @@ static void bleComFunctionalTimeUpdate(char c)
     static int numberOfFunctionalTimeChar = 0;
 
     newFunctionalTime[numberOfFunctionalTimeChar++] = c;
-
-    sprintf(aux, "%c", c);
-    bleComStringWrite(aux);
 
     if(numberOfFunctionalTimeChar >= FUNCTIONAL_TIME_NUMBER_OF_CHARS) {
         bleComState = BLE_PROCESS_COMMAND;
