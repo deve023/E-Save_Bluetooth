@@ -9,8 +9,8 @@
 
 #include "motion_sensor.h"
 
-#define SIGNAL_PIN PG_0             ///> Sensor signal pin.
-#define MOTION_SENSOR_LED_PIN LED1  ///> LED to indicate motion detected.
+#define SIGNAL_PIN PF_10             ///> Sensor signal pin.
+#define MOTION_SENSOR_LED_PIN PC_0  ///> LED to indicate motion detected.
 
 //=====[Declaration of private defines]========================================
 

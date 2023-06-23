@@ -15,8 +15,10 @@
 
 //=====[Declaration of private defines]========================================
 
-#define ON_BUTTON PB_1  ///> Button to turn actuator logic on.
-#define OFF_BUTTON PC_2 ///> Button to turn actuator logic off: relay disconected regardless of time / sensor status.
+#define ON_BUTTON_PIN PD_1  ///> Button to turn actuator logic on.
+#define OFF_BUTTON_PIN PD_0 ///> Button to turn actuator logic off: relay disconected regardless of time / sensor status.
+
+#define FUNCTIONAL_TIME_LED_PIN PA_3
 
 //=====[Declaration of private data types]=====================================
 
@@ -29,10 +31,10 @@ typedef enum {
 
 //=====[Declaration and initialization of public global objects]===============
 
-DigitalIn onButton(ON_BUTTON);      ///> On button (Button to turn actuator logic on).
-DigitalIn offButton(OFF_BUTTON);    ///> Off button (Button to turn actuator logic off: relay disconected regardless of time / sensor status).
+DigitalIn onButton(ON_BUTTON_PIN);      ///> On button (Button to turn actuator logic on).
+DigitalIn offButton(OFF_BUTTON_PIN);    ///> Off button (Button to turn actuator logic off: relay disconected regardless of time / sensor status).
 
-DigitalOut functionalTimeLed(LED2); ///> Led to indicate if the current time is a functional time.
+DigitalOut functionalTimeLed(FUNCTIONAL_TIME_LED_PIN); ///> Led to indicate if the current time is a functional time.
 
 //=====[Declaration and initialization of public global variables]=============
 

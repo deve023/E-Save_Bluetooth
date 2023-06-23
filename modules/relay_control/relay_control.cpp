@@ -12,10 +12,10 @@
 
 //=====[Declaration of private defines]========================================
 
-#define RELAY_PIN PF_2  ///> Relay control pin.
+#define RELAY_PIN PF_5  ///> Relay control pin.
 
-#define RELAY_ACT_LED_PIN LED3      ///> LED pin to indicate relay active.
-#define RELAY_DEACT_LED_PIN PH_1    //> LED pin to indicate relay inactive.
+#define RELAY_ACT_LED_PIN PC_3     ///> LED pin to indicate relay active.
+#define RELAY_DEACT_LED_PIN PF_3    //> LED pin to indicate relay inactive.
 
 //=====[Declaration and initialization of public global objects]===============
 
