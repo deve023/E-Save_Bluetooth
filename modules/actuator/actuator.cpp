@@ -43,6 +43,7 @@ static int dt_ms;  ///> Time increment to update module.
 static int TriggerCeasedMotionTime; ///> Time to deactivate relay once motion is not detected. Default = 3 seg.
 static actuatorState_t actuatorState = ACTUATOR_DISABLE;   ///> Initial state of the Actuator. Updated as soon as actuatorUpdate() is called.
 static bool systemBlocked = false;  ///> Boolean to indicate if system is blocked.
+
 //=====[Declarations (prototypes) of private functions]========================
 
 /**
@@ -166,7 +167,7 @@ static void buttonsInit()
 {
     onButton.mode(PullUp);
     offButton.mode(PullUp);
-    
+
     onButton.rise(NULL);
     offButton.rise(&offButtonPressed);
 }

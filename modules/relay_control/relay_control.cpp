@@ -19,7 +19,7 @@
 
 //=====[Declaration and initialization of public global objects]===============
 
-DigitalInOut relayPin(RELAY_PIN);   ///> Relay control pin.
+DigitalOut relayPin(RELAY_PIN);   ///> Relay control pin.
 
 DigitalOut relayActLed(RELAY_ACT_LED_PIN);      ///> LED to indicate relay activate.
 DigitalOut relayDeactLed(RELAY_DEACT_LED_PIN);  ///> LED to indicate relay inactive.
@@ -32,14 +32,12 @@ static bool relayStatus;   ///> Relay status boolean variable.
 
 void relayControlInit()
 {
-    relayPin.mode(OpenDrain);
     relayDeactivate();
 }
 
 void relayActivate()
 {
-    relayPin.output();
-    relayPin = LOW;
+    relayPin = ON;
     relayStatus = ON;
 
     relayActLed = ON;
@@ -48,7 +46,7 @@ void relayActivate()
 
 void relayDeactivate()
 {
-    relayPin.input();
+    relayPin = OFF;
     relayStatus = OFF;
 
     relayActLed = OFF;
