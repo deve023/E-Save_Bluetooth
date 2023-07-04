@@ -33,7 +33,7 @@ typedef enum {
 
 UnbufferedSerial bleCom(TX, RX, BLE_COM_BAUDRATE);  ///> UART comunication.
 
-//=====[Declaration and initialization of public global variables]=============
+//=====[Declaration and initialization of private global variables]=============
 
 static bleComState_t bleComState = BLE_PROCESS_COMMAND; ///> Bluetooth comunication status.
 
@@ -148,7 +148,7 @@ static void bleComFunctionalTimeUpdate(char c);
  * @brief Sets new functional time according to variable newFunctionalTime[].
  * 
  */
-static void bleComSeFunctionalTime();
+static void bleComSetFunctionalTime();
 
 /**
  * @brief Prints the functional time period through bleCom.
@@ -424,7 +424,7 @@ static void bleComFunctionalTimeUpdate(char c)
     if(numberOfFunctionalTimeChar >= FUNCTIONAL_TIME_NUMBER_OF_CHARS) {
         bleComState = BLE_PROCESS_COMMAND;
         numberOfFunctionalTimeChar = 0;
-        bleComSeFunctionalTime();
+        bleComSetFunctionalTime();
         bleComStringWrite("\r\n");
         bleComStringWrite("Functional time has been set.\r\n");
     } else if(numberOfFunctionalTimeChar == 2) {
@@ -445,7 +445,7 @@ static void bleComFunctionalTimeUpdate(char c)
     }
 }
 
-static void bleComSeFunctionalTime()
+static void bleComSetFunctionalTime()
 {
     char sHour[3];
     char sMin[3];

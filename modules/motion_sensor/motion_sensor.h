@@ -17,13 +17,6 @@
 void motionSensorInit(int dt);
 
 /**
- * @brief Reads sensor state.
- * 
- * @return Boolean to indicate sensor state being ON/OFF.
- */
-bool motionSensorRead();
-
-/**
  * @brief Updates and returns the accumulated time that the sensor did not
  * detect motion.
  *

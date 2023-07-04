@@ -36,11 +36,6 @@ void motionSensorInit(int dt)
     motionSensorLed = OFF;
 }
 
-bool motionSensorRead()
-{
-    return motionSensorState;
-}
-
 int motionSensorUpdate()
 {
     static int accumulatedMotionCeasedTime = 0;
