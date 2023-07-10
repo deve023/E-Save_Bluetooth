@@ -7,7 +7,9 @@ E-Save Bluetooth is a low cost device which turns an electric appliance off if i
 This project was developed as part of the Embedded Systems course in the University of Buenos Aires. I designed and implemented a prototype while in my last year of studying Electronic Engineering. I believe anyone with basic knowledge in electronics and embedded software can understand and implement this device. Developing and building this prototype took approximately 20 hours of work spread over 4 weeks.
 
 Summary (Spanish): [PDF](https://docs.google.com/document/d/1ngRxoOGkS6Whcuwp6-DJUADUrxsZ91UcAmCLxtPNpU8/edit)
+
 Video summary (English): [Youtube]()
+
 Video Demo (Spanish): [Youtube](https://youtu.be/fHSL6gb9g30)
 
 The idea for this product comes from the fact that having a high consumption appliance on for unnecessary long periods of time can be very dangerous and expensive. In this day and age, it’s of the upmost importance to regulate electrical consumption at home. E-Save Bluetooth was developed in order to diminish negative impact to the environment and also help save money on the electrical bill.
