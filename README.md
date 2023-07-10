@@ -10,7 +10,7 @@ Video summary (English): [Youtube](https://youtu.be/3YbzRw6OTMo)
 
 Video Demo (Spanish): [Youtube](https://youtu.be/fHSL6gb9g30)
 
-Summary (Spanish): [PDF](https://docs.google.com/document/d/1ngRxoOGkS6Whcuwp6-DJUADUrxsZ91UcAmCLxtPNpU8/edit)
+Summary (Spanish): [PDF](https://github.com/deve023/E-Save_Bluetooth/blob/main/Summary%20(Spanish).pdf)
 
 # Background
 
