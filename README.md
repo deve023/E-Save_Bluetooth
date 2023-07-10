@@ -1,5 +1,3 @@
-# E-Save_Bluetooth
-
 ![logo](https://github.com/deve023/E-Save_Bluetooth/assets/51866497/d53e6131-77cd-44be-862a-953f828b7288)
 
 E-Save Bluetooth is a low cost device which turns an electric appliance off if it does not detect presence in its environment for a certain period of time. It can be configured via Bluetooth Low Energy.
