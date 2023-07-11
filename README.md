@@ -38,6 +38,7 @@ The firmware consists of 6 modules. The Energy Save system encapsulates the whol
 
 # Circuit diagram
 
-![ESave-Overview_Pins drawio (2)](https://github.com/deve023/E-Save_Bluetooth/assets/51866497/7a885e3e-80d0-439a-9be5-da4d1856e8ee)
+![ESave-Overview_Pins drawio (3)](https://github.com/deve023/E-Save_Bluetooth/assets/51866497/6fc54ae0-400d-4e10-89d2-43a9ba03d2bc)
+
 
 Feel free to contact me if you have any questions or ideas!
